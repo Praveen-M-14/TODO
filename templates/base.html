@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .remove-button {
+            color: red;
+            margin-left: 10px;
+            text-decoration: none;
+        }
+        .edit-button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <form action="{{ url_for('check', id=todo.id) }}" method="post" style="display:inline;">
+                    <input type="checkbox" name="done" {% if todo.done %} checked {% endif %} onchange="this.form.submit()">
+                </form>
+                <span {% if todo.done %} style="text-decoration: line-through;"{% endif %}>{{ todo.task }}</span>
+                <a href="{{ url_for('check', id=todo.id) }}" class="check-button">Check</a>
+                <a href="{{ url_for('edit', id=todo.id) }}" class="edit-button">Edit</a>
+                <a href="{{ url_for('delete', id=todo.id) }}" class="remove-button">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('add') }}" method="post">
+        <input type="text" name="todo" required placeholder="Add a new todo">
+        <button type="submit">Add Todo</button>
+    </form>
+</body>
+</html>
